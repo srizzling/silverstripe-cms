@@ -4,13 +4,13 @@ Feature: Manage global page permissions
   I want to manage view and edit permission defaults on pages
   In order to set good defaults and avoid repeating myself on each page
 
-Background:
-  Given a "member" "ADMIN" belonging to "Administrators"
-  Given a "page" "Home" with "Content"="Page 1"
-  Given a "member" "AUTHOR" belonging to "Authors"
-  Given a "group" "Authors" has permissions "Full administrative rights"
+Background: 
+  Given a "page" "Home" with "Content"="Page 1"  
+  And a "group" "AUTHOR" has permissions "Access to all CMS sections" and "View any page" and "Edit any page"
   And I am logged in with "ADMIN" permissions
+  And I have the user "AUTHOR"
   And I go to "/admin/settings"
+  And I wait for 10 seconds
   And I click the "Access" CMS tab
 
 @todo
@@ -41,21 +41,21 @@ Scenario: I can limit global view permissions to certain groups
   When I am not logged in the CMS
   And I am on the homepage
   Then I should see a log-in form
-  When I am logged in with "AUTHOR" permissions
+  When I am log in with "AUTHOR@example.org" and "secret" 
   And I am not logged in the CMS
   Then I should see a log-in form
   When I am logged in with "ADMIN" permissions
   And I am on the homepage
   Then I should see "Page 1"
 
-@todo
+
 Scenario: I can limit global edit permissions to logged-in users
   Given I select "Anyone who can log-in to the CMS" from "Who can edit pages on this site?" radio group
   And I press the "Save" button
-  Then pages should be editable by "ADMIN"
-  And pages should be editable by "AUTHOR"
+  Then pages should be editable by "AUTHOR"
+  #And pages should be editable by "AUTHOR"
 
-
+@todo
 Scenario: I can limit global edit permissions to certain groups
   Given I select "Only these people (choose from list)" in 'Who can edit pages on this site?'
   And I select "Administrators" in the "Editor Groups" dropdown
